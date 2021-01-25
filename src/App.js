@@ -1,24 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import { Card, Box, Container, Image, Button, Input, Form, GlobalStyle, Label, Title, Author, Date } from "./styles";
 
-function App() {
+const App = () => {
+  const [book, setBook] = useState("");
+  const [data, setData] = useState(undefined);
+
+
+  const handleBook = async (e) => {
+    e.preventDefault()
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${book}`);
+    const json = await response.json();
+
+    setData(json.items);
+  }
+
+  useEffect(() => {
+    if (book.lenght === 0) {
+      return;
+    }
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <GlobalStyle />
+    <Box>
+      <Title color="#fff">Book Finder</Title>
+      <Form onClick={handleBook}>
+        <Label htmlFor="book">Digite o livro</Label>
+          <Input id="book" type="text" placeholder="Digite aqui" onChange={(e) => setBook(e.target.value)} />
+        <Button type="submit" onClick={handleBook}>Pesquisar</Button>
+      </Form>
+    </Box >
+    {data ? (
+      <Container>
+        {data && data.map((items) => (
+            <Card>
+              <Image src={items.volumeInfo.imageLinks.thumbnail} alt={items.volumeInfo.title} />
+              <Title>{items.volumeInfo.title}</Title>
+              <Author>{items.volumeInfo.authors}</Author>
+              <Date>{items.volumeInfo.publishedDate}</Date>
+              <a href={items.selfLink} target="_blank" rel="noreferrer"><Button>Ler</Button></a>
+            </Card>
+        ))}
+      </Container>
+    ) : <Title color="#fff">Busca vazia</Title>}
+    </>
   );
 }
 

@@ -44,7 +44,7 @@ export const Image = styled.img`
 
 export const Input = styled.input`
   border: none;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 05px rgba(0, 0, 0, 0.2);
   font-size: 14px;
   height: 50px;
   padding: 10px;
@@ -97,4 +97,8 @@ export const Date = styled.p`
 export const Author = styled.span`
   font-size: 15px;
   font-weight: bold;
+`;
+
+export const Description = styled.h3`
+  font-weight: 400;
 `;
